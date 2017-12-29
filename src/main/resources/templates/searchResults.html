@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org/">
+<head th:replace="fragments :: head">
+</head>
+<body>
+
+<div th:replace="fragments :: page-header"></div>
+
+<div class="container body-content">
+
+    <a href="/search/" >&lt;&lt;&lt; BACK</a>
+
+
+
+    <h1 th:text="${#strings.capitalizeWords(title)}"></h1>
+
+    <div th:unless="${testdata} and ${testdata.size()}">
+        <h2>No Results</h2>
+    </div>
+
+
+    <div th:if="*{testdata.size()>0}">
+        <h3 th:text="${testdata.size() + ' Result(s)'}"></h3>
+    </div>
+
+
+    <div >
+        <table>
+            <th:block th:each="header : ${headers}">
+                <th th:text="${header}"></th>
+            </th:block>
+
+
+
+
+
+            <tr th:each="job : ${testdata}">
+                <th:block th:each="item : ${job}">
+                    <td th:text="${item.value}"></td>
+                </th:block>
+            </tr>
+
+        </table>
+    </div>
+
+
+</div>
+
+</body>
+</html>
