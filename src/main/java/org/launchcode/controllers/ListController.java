@@ -1,6 +1,9 @@
 package org.launchcode.controllers;
 
-import org.launchcode.models.JobData;
+import org.launchcode.models.Job;
+import org.launchcode.models.JobField;
+import org.launchcode.models.JobFieldType;
+import org.launchcode.models.data.JobData;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -16,50 +19,65 @@ import java.util.HashMap;
 @RequestMapping(value = "list")
 public class ListController {
 
-    static HashMap<String, String> columnChoices = new HashMap<>();
-
-    public ListController () {
-        columnChoices.put("core competency", "Skill");
-        columnChoices.put("employer", "Employer");
-        columnChoices.put("location", "Location");
-        columnChoices.put("position type", "Position Type");
-        columnChoices.put("all", "All");
-    }
+    private JobData jobData = JobData.getInstance();
 
     @RequestMapping(value = "")
     public String list(Model model) {
-
-        model.addAttribute("columns", columnChoices);
-
+        JobFieldType[] fields = JobFieldType.values();
+        model.addAttribute("fields", fields);
         return "list";
     }
 
     @RequestMapping(value = "values")
-    public String listColumnValues(Model model, @RequestParam String column) {
+    public String listColumnValues(Model model, @RequestParam JobFieldType column) {
 
-        model.addAttribute("headers", JobData.findAll().get(0).keySet() );
-
-        if (column.equals("all")) {
-            ArrayList<HashMap<String, String>> jobs = JobData.findAll();
-            model.addAttribute("title", "All Jobs");
-            model.addAttribute("jobs", jobs);
-            return "list-jobs";
-        } else {
-            ArrayList<String> items = JobData.findAll(column);
-            model.addAttribute("title", "All " + columnChoices.get(column) + " Values");
-            model.addAttribute("column", column);
-            model.addAttribute("items", items);
-            return "list-column";
+        if (column.equals(JobFieldType.ALL)) {
+            return "redirect:/list/all";
         }
 
+
+        ArrayList<? extends JobField> items;
+
+        switch(column) {
+            case EMPLOYER:
+                items = jobData.getEmployers().findAll();
+                break;
+            case LOCATION:
+                items = jobData.getLocations().findAll();
+                break;
+            case CORE_COMPETENCY:
+                items = jobData.getCoreCompetencies().findAll();
+                break;
+            case POSITION_TYPE:
+            default:
+                items = jobData.getPositionTypes().findAll();
+        }
+
+        model.addAttribute("title", "All " + column.getName() + " Values");
+        model.addAttribute("column", column);
+        model.addAttribute("items", items);
+
+        return "list-column";
     }
 
     @RequestMapping(value = "jobs")
     public String listJobsByColumnAndValue(Model model,
-            @RequestParam String column, @RequestParam String value) {
+            @RequestParam JobFieldType column, @RequestParam String name) {
 
-        ArrayList<HashMap<String, String>> jobs = JobData.findByColumnAndValue(column, value);
-        model.addAttribute("title", "Jobs with " + columnChoices.get(column) + ": " + value);
+        ArrayList<Job> jobs = jobData.findByColumnAndValue(column, name);
+
+        model.addAttribute("title", "Jobs with " + column.getName() + ": " + name);
+        model.addAttribute("jobs", jobs);
+
+        return "list-jobs";
+    }
+
+    @RequestMapping(value = "all")
+    public String listAllJobs(Model model) {
+
+        ArrayList<Job> jobs = jobData.findAll();
+
+        model.addAttribute("title", "All Jobs");
         model.addAttribute("jobs", jobs);
 
         return "list-jobs";

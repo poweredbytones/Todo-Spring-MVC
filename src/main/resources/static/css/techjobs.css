@@ -27,3 +27,13 @@ table.job-listing td:last-child {
 label {
     margin-right: 15px;
 }
+
+ul.form-group {
+    padding: 0;
+}
+
+ul.form-group li {
+    list-display: none;
+    display: inline-block;
+    padding-right: 15px;
+}

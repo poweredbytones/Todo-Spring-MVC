@@ -7,11 +7,12 @@
     <div th:replace="fragments :: page-header"></div>
 
     <div class="container body-content">
+        <h1>TechJobs</h1>
+
         <p>View jobs by:</p>
         <ul>
-            <li th:each="action : ${actions}">
-                <a th:href="@{'/' + ${action.key}}" th:text="${action.value}"></a>
-            </li>
+            <li><a th:href="@{/search}">Search</a></li>
+            <li><a th:href="@{/list}">List</a></li>
         </ul>
     </div>
 
