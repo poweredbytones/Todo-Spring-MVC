@@ -19,9 +19,9 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import javax.validation.Valid;
 
 
-@Controller
-@RequestMapping(value = "menu")
-public class MenuController {
+    @Controller
+    @RequestMapping(value = "menu")
+    public class MenuController {
 
     @Autowired
     private MenuDao MenuDao;
