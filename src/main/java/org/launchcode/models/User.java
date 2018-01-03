@@ -36,5 +36,17 @@ public class User {
     @Size(min=3, max=15)
     private String username;
 
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    @NotNull
+    @Size(min=3,max=15)
+    private String password;
+
 
 }

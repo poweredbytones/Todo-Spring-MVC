@@ -24,7 +24,7 @@ import javax.validation.Valid;
     public class MenuController {
 
     @Autowired
-    private MenuDao MenuDao;
+    private MenuDao menuDao;
 
     @Autowired
     private CheeseDao cheeseDao;
@@ -33,7 +33,7 @@ import javax.validation.Valid;
     public String justmenu(Model model){
 
         model.addAttribute("title", "view Menu");
-        Iterable<Menu> menus= MenuDao.findAll();
+        Iterable<Menu> menus= menuDao.findAll();
         System.out.println("%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%");
         System.out.println(menus);
         model.addAttribute("menus",menus);
@@ -62,7 +62,7 @@ import javax.validation.Valid;
         }
 
         System.out.println(newMenu.getName());
-        MenuDao.save(newMenu);
+        menuDao.save(newMenu);
         return "redirect:view/" + newMenu.getId();
     }
 
@@ -70,7 +70,7 @@ import javax.validation.Valid;
     public String viewMenu(@PathVariable(value="Id") int ID,Model model) {
 
         model.addAttribute("title", "Add Menu");
-        Menu menu = MenuDao.findOne(ID);
+        Menu menu = menuDao.findOne(ID);
         model.addAttribute(menu);
 
         return "menu/view";
@@ -80,7 +80,7 @@ import javax.validation.Valid;
     @RequestMapping(value="/add-item/{Id}", method = RequestMethod.GET)
     public String addItem(@PathVariable(value="Id") int ID,Model model) {
 
-        Menu menu = MenuDao.findOne(ID);
+        Menu menu = menuDao.findOne(ID);
         model.addAttribute("title", "Add Menu");
 
         model.addAttribute("form", new AddMenuItemForm(menu,cheeseDao.findAll() ));
@@ -108,9 +108,9 @@ import javax.validation.Valid;
         System.out.println("$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$" + form.getId());
 
         Cheese theCheese = cheeseDao.findOne(form.getCheeseId());
-        Menu theMenu = MenuDao.findOne(form.getId());
+        Menu theMenu = menuDao.findOne(form.getId());
         theMenu.addItem(theCheese);
-        MenuDao.save(theMenu);
+        menuDao.save(theMenu);
 
 
         return "redirect:view/" + theMenu.getId();
