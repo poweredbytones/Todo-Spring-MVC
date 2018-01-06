@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org/">
+<head th:replace="fragments :: head"></head>
+
+<body class="container">
+
+<h1> This is a temp logged in page:</h1>
+<br />
+
+<h1 th:text="${title}">Default Title</h1>
+
+<nav th:replace="fragments :: navigation"></nav>
+
+<p th:unless="${usersList} and ${usersList.size()}">no users :(</p>
+
+<p th:text="${personObj.username}">dummy</p>
+
+
+<table class="table">
+
+    <tr>
+        <th>Name</th>
+    </tr>
+
+    <tr th:each="List : ${usersList}">
+        <td th:text="${List.username}"></td>
+    </tr>
+    <a href="/user/add">Add User</a>
+</table>
+
+</body>
+</html>

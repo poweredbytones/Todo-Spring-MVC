@@ -11,23 +11,27 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.Errors;
 import org.springframework.validation.ObjectError;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.ModelAndView;
 
 import javax.validation.Valid;
 
 
 @Controller
+@SessionAttributes("personObj")
 @RequestMapping(value = "user")
 public class UserController {
 
     @Autowired
     private UserDao userDao;
 
+
     @RequestMapping(value = "")
     public String index(Model model) {
+
+
+        model.addAttribute("personObj", userDao.findByusername("bobby").get(0));
+
 
         model.addAttribute("usersList", userDao.findAll());
         System.out.println("***********************");
@@ -43,6 +47,8 @@ public class UserController {
     }
     @RequestMapping(value = "add", method = RequestMethod.GET)
     public String displayUserForm(Model model) {
+        System.out.println("-- user/add");
+
         model.addAttribute("title", "Add User");
         model.addAttribute(new User());
         return "user/add";
@@ -52,6 +58,7 @@ public class UserController {
     public String addUser(@ModelAttribute @Valid User newUser, Errors errors, Model model) {
 
         System.out.println("=====");
+
 
         if(userDao.findByusername(newUser.getUsername()).size() > 0)
         {
@@ -67,6 +74,20 @@ public class UserController {
             return "user/add";
         }
         userDao.save(newUser);
+
+
         return "redirect:";
+    }
+    @RequestMapping(value = "loggedin", method = RequestMethod.GET)
+    public String displayLoggedinPage(Model model)
+    {
+
+
+        System.out.println("this is the logged in page controller");
+        model.addAttribute("usersList", userDao.findAll());
+
+        model.addAttribute("title", "Logged IN");
+
+        return "user/loggedIn";
     }
 }
