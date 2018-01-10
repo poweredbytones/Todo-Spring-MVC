@@ -1,9 +1,6 @@
 package org.launchcode.controllers;
 
-import org.launchcode.models.Category;
-import org.launchcode.models.Cheese;
-import org.launchcode.models.Menu;
-import org.launchcode.models.User;
+import org.launchcode.models.*;
 import org.launchcode.models.data.UserDao;
 import org.launchcode.models.forms.AddMenuItemForm;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -78,12 +75,42 @@ public class UserController {
 
         return "redirect:";
     }
+    @RequestMapping(value = "login", method = RequestMethod.GET)
+    public String logInPage(Model model)
+    {
+
+        model.addAttribute(new UserLogin());
+        System.out.println("this is the login page");
+
+        model.addAttribute("title", "Please Log In");
+
+        return "user/login";
+    }
+
+    @RequestMapping(value = "login", method = RequestMethod.POST)
+    public String logInPagePOST(@ModelAttribute @Valid UserLogin newUser, Errors errors, Model model)
+    {
+
+
+        System.out.println("this is the login page POST");
+        //System.out.println(newUser.getId());
+        //System.out.println(newUser.getUsername());
+        System.out.println(newUser.getEmail());
+        System.out.println(newUser.getPassword());
+        System.out.println(errors);
+
+        model.addAttribute("title", "logging in ?");
+
+        return "user/login";
+    }
+
     @RequestMapping(value = "loggedin", method = RequestMethod.GET)
     public String displayLoggedinPage(Model model)
     {
 
 
         System.out.println("this is the logged in page controller");
+
         model.addAttribute("usersList", userDao.findAll());
 
         model.addAttribute("title", "Logged IN");

@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org/">
+<head th:replace="fragments :: head"></head>
+
+
+<body>
+    <div class="container">
+
+
+
+        <form method="post" style="max-width:600px;" th:object="${userLogin}" class="form-signin">
+            <h2 class="form-signin-heading">Please sign in</h2>
+            <div class="form-group">
+                <label th:for="email" class="sr-only">Email address</label>
+                <input type="email" id="inputEmail" class="form-control" th:field="*{email}" placeholder="Email address" th:required="required" th:autofocus ="autofocus" />
+                <span th:errors="*{email}" class="error"></span>
+            </div>
+            <div class="form-group">
+                <label th:for="Password"  class="sr-only">Password</label>
+                <input type="password" id="inputPassword" class="form-control" th:field="*{password}" placeholder="Password" th:required="required" />
+                <span th:errors="*{password}" class="error"></span>
+            </div>
+
+
+
+            <input type="submit" value="Add User" />
+        </form>
+        <!--
+                <form method="post" style="max-width:600px;" th:object="${user}" class="form-signin">
+                    <h2 class="form-signin-heading">Please sign in</h2>
+                    <label th:for="email" class="sr-only">Email address</label>
+                    <input type="email" id="inputEmail" class="form-control" placeholder="Email address" th:required="required" th:autofocus ="autofocus" />
+                    <label for="inputPassword" class="sr-only">Password</label>
+                    <input type="password" id="inputPassword" class="form-control" placeholder="Password" th:required="required" />
+                    <div class="checkbox">
+                        <label>
+                            <input type="checkbox" value="remember-me" > Remember me</input>
+                        </label>
+                    </div>
+                    <button class="btn btn-lg btn-primary btn-block" type="submit">Sign in</button>
+                </form>-->
+
+            </div> <!-- /container -->
+
+</body>
+</html>

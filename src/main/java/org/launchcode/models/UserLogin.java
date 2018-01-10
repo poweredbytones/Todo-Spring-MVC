@@ -11,7 +11,7 @@ import javax.validation.constraints.Size;
 
 @Entity
 
-public class User {
+public class UserLogin {
 
 
     public int getId() {
@@ -29,10 +29,8 @@ public class User {
     }
 
     @Id
-    @GeneratedValue
     private int id;
 
-    @NotNull
     @Size(min=3, max=15)
     private String username;
 
